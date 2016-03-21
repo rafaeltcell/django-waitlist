@@ -110,10 +110,10 @@ MIDDLEWARE_CLASSES = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "django_example.urls"
+ROOT_URLCONF = "django-waitlist.urls"
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = "django_example.wsgi.application"
+WSGI_APPLICATION = "django-waitlist.wsgi.application"
 
 INSTALLED_APPS = [
     "django.contrib.auth",
@@ -131,7 +131,7 @@ INSTALLED_APPS = [
     "pinax.waitinglist",
 
     # project
-    "django_example",
+    "django-waitlist",
 ]
 
 # A sample logging configuration. The only tangible logging

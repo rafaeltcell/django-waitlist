@@ -1,4 +1,4 @@
-const templatePath = 'django_example/templates/';
+const templatePath = 'django-waitlist/templates/';
 const staticRoot = 'static/';
 const staticSource = staticRoot + 'src/';
 const staticBuild = staticRoot + '_build/';
