@@ -1,4 +1,4 @@
-# django-waitlist
+# django_waitlist
 
 ## Getting Started
 

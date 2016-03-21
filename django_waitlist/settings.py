@@ -9,8 +9,8 @@ DEBUG = True
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": "dev.db",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "django_waitlist_dev",
     }
 }
 
@@ -74,7 +74,7 @@ STATICFILES_FINDERS = [
 ]
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = "%@*a60#f16=-xu#u+%1erpjgg9#!&#vgowjf21)1l2ah96g#uo"
+SECRET_KEY = "-^a3eo%thv)970oarhm!(h*d!@s4#&01s0j(4&tlal$n(cg7v^"
 
 TEMPLATES = [
     {
@@ -94,6 +94,7 @@ TEMPLATES = [
                 "django.template.context_processors.tz",
                 "django.template.context_processors.request",
                 "django.contrib.messages.context_processors.messages",
+                "account.context_processors.account",
                 "pinax_theme_bootstrap.context_processors.theme",
             ],
         },
@@ -110,12 +111,13 @@ MIDDLEWARE_CLASSES = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "django-waitlist.urls"
+ROOT_URLCONF = "django_waitlist.urls"
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = "django-waitlist.wsgi.application"
+WSGI_APPLICATION = "django_waitlist.wsgi.application"
 
 INSTALLED_APPS = [
+    "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.messages",
@@ -127,11 +129,13 @@ INSTALLED_APPS = [
     "bootstrapform",
     "pinax_theme_bootstrap",
 
-    # pinax
-    "pinax.waitinglist",
+    # external
+    "account",
+    "metron",
+    "pinax.eventlog",
 
     # project
-    "django-waitlist",
+    "django_waitlist",
 ]
 
 # A sample logging configuration. The only tangible logging
@@ -168,3 +172,15 @@ FIXTURE_DIRS = [
 ]
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+ACCOUNT_OPEN_SIGNUP = True
+ACCOUNT_EMAIL_UNIQUE = True
+ACCOUNT_EMAIL_CONFIRMATION_REQUIRED = False
+ACCOUNT_LOGIN_REDIRECT_URL = "home"
+ACCOUNT_LOGOUT_REDIRECT_URL = "home"
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 2
+ACCOUNT_USE_AUTH_AUTHENTICATE = True
+
+AUTHENTICATION_BACKENDS = [
+    "account.auth_backends.UsernameAuthenticationBackend",
+]
