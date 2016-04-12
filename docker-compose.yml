@@ -14,3 +14,15 @@ services:
       - "3000:3000"
     links:
       - db
+
+  tcell_web:
+    build:
+      context: .
+      dockerfile: Dockerfile.tcell
+    command: tcell_agent run python manage.py runserver 0.0.0.0:3000
+    volumes:
+      - .:/code
+    ports:
+      - "3000:3000"
+    links:
+      - db
