@@ -7,7 +7,7 @@ services:
 
   web:
     build: .
-    command: python manage.py runserver 0.0.0.0:3000
+    command: uwsgi --socket 0.0.0.0:3000 --protocol=http --module django_waitlist.wsgi --master --pidfile=/tmp/project-master.pid --processes=1 --enable-threads --check-static django_waitlist/
     volumes:
       - .:/code
     ports:
@@ -19,7 +19,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.tcell
-    command: tcell_agent run python manage.py runserver 0.0.0.0:3000
+    command: tcell_agent run uwsgi --socket 0.0.0.0:3000 --protocol=http --module django_waitlist.wsgi --master --pidfile=/tmp/project-master.pid --processes=1 --enable-threads --check-static django_waitlist/
     volumes:
       - .:/code
     ports:
