@@ -7,6 +7,7 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r"^$", TemplateView.as_view(template_name="homepage.html"), name="home"),
+    url(r"^ping/", TemplateView.as_view(template_name="ping.json"), name="ping"),
     url(r"^admin/", include(admin.site.urls)),
     url(r"^account/", include("account.urls")),
     url(r'^waitlist_entries', include('waitlist_entries.urls')),
