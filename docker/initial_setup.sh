@@ -1,4 +1,4 @@
-cd django-waitlist && docker-compose up -d postgreshost
+docker-compose up -d postgreshost
 echo "WAITING FOR DATABASE TO START"
 sleep 4 # wait for the database to start up
 echo "CREATING django_waitlist_dev"
