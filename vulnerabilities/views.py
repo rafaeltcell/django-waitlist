@@ -18,3 +18,7 @@ def search(request):
         'waitlist_entries': waitlist_entries
     }
     return render(request, 'vulnerabilities/search.html', context)
+
+def sql_exception(request):
+    for p in WaitlistEntry.objects.raw("select * from wailskfdj"):
+        print(p)

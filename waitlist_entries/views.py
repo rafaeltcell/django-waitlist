@@ -24,7 +24,3 @@ def index(request):
         'waitlist_entry_form': waitlist_entry_form
     }
     return render(request, 'waitlist_entries/index.html', context)
-
-def sql_exception(request):
-    for p in WaitlistEntry.objects.raw("select * from wailskfdj"):
-        print(p)
