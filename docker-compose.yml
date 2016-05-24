@@ -1,6 +1,6 @@
 version: '2'
 services:
-  db:
+  postgreshost:
     image: postgres:9.4.1
     ports:
       - "5432:5432"
@@ -13,7 +13,7 @@ services:
     ports:
       - "3000:3000"
     links:
-      - db
+      - postgreshost
 
   tcell_web:
     build:
@@ -25,4 +25,4 @@ services:
     ports:
       - "3000:3000"
     links:
-      - db
+      - postgreshost

@@ -1,0 +1,15 @@
+<h2>Search Waitlist</h2>
+<form action="{% url 'vulnerabilities:search' %}" method="get">
+    <input type="text" name="q">
+    <input type="submit" value="Submit" />
+</form>
+
+{% if not waitlist_entries %}
+  <h2>No results</h2>
+{% else %}
+  <ul>
+  {% for waitlist_entry in waitlist_entries %}
+      <li>{{ waitlist_entry }}</li>
+  {% endfor %}
+  </ul>
+{% endif %}
