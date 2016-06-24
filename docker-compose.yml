@@ -26,3 +26,18 @@ services:
       - "3000:3000"
     links:
       - postgreshost
+
+  tcell_local_web:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.tcell.local
+    command: sh -c "pip install -r requirements.txt && tcell_agent run uwsgi --socket 0.0.0.0:3000 --protocol=http --module django_waitlist.wsgi --master --pidfile=/tmp/project-master.pid --processes=1 --enable-threads --check-static django_waitlist/"
+    volumes:
+      - ../pythonagent-tcell:/tcellagent_src
+      - .:/code
+      - ./requirements.tcell.local.txt:/code/requirements.txt
+      - ./tcell:/code/tcell
+    ports:
+      - "3000:3000"
+    links:
+      - postgreshost
