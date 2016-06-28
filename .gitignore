@@ -61,5 +61,7 @@ target/
 #Ipython Notebook
 .ipynb_checkpoints
 
+.DS_Store
+
 tcell/
 tcell_agent.config
