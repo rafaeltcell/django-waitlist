@@ -1,0 +1,9 @@
+FROM python:2.7
+
+ENV PYTHONUNBUFFERED 1
+
+RUN pip install uWSGI
+
+RUN mkdir /code
+
+WORKDIR /code
