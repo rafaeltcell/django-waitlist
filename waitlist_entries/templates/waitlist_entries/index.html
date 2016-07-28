@@ -1,7 +1,19 @@
 <h2>Working Form</h2>
-<form action="{% url 'waitlist_entries:index' %}" method="post">
+<form action="{% url 'waitlist_entries:index' %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ waitlist_entry_form }}
+    <div class="form-group">
+      <label for="picture">File upload: </label>
+      <input type="file" name="picture">
+    </div>
+    <div class="form-group">
+      <label for="picture">File upload: </label>
+      <input type="file" name="picture">
+    </div>
+    <div class="form-group">
+      <label for="avatar">File upload: </label>
+      <input type="file" name="avatar">
+    </div>
     <input type="submit" value="Submit" />
 </form>
 <h2>Missing CSRF Form</h2>
