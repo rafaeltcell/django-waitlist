@@ -13,7 +13,7 @@ def index(request):
         if waitlist_entry_form.is_valid():
             email = waitlist_entry_form.cleaned_data['email']
             waitlist_entry = WaitlistEntry.objects.create(email=email)
-            redirect(reverse('index'))
+            redirect(reverse('waitlist_entries:index'))
 
     else:
         waitlist_entry_form = WaitlistEntryForm()
