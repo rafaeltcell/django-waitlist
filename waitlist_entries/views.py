@@ -32,6 +32,7 @@ def index(request):
 
 @csrf_exempt
 def create(request):
+    print("POST", request.POST)
     if request.method == 'POST':
         waitlist_entry_form = WaitlistEntryForm(request.POST)
 
