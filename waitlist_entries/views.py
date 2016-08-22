@@ -33,7 +33,15 @@ def index(request):
 @csrf_exempt
 def create(request):
     if request.method == 'POST':
-        waitlist_entry_form = WaitlistEntryForm(request.POST)
+        data = request.POST
+
+        if not data:
+            try:
+                data = json.loads(request.body)
+            except Exception as e:
+                pass
+
+        waitlist_entry_form = WaitlistEntryForm(data)
 
         if waitlist_entry_form.is_valid():
             email = waitlist_entry_form.cleaned_data['email']
