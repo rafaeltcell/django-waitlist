@@ -12,6 +12,31 @@ from waitlist_entries.forms import WaitlistEntryForm
 
 
 def index(request):
+    import addressbook_pb2
+    address_book = addressbook_pb2.AddressBook()
+    try:
+        with open("ma-book", "rb") as ma_book_file:
+            address_book.ParseFromString(ma_book_file.read())
+    except IOError:
+        print ": File not found.  Creating a new file."
+    print type(address_book.SerializeToString())
+    print address_book.SerializeToString()
+
+    import logging
+
+    import httplib as http_client
+    http_client.HTTPConnection.debuglevel = 1
+
+    # You must initialize logging, otherwise you'll not see debug output.
+    logging.basicConfig()
+    logging.getLogger().setLevel(logging.DEBUG)
+    requests_log = logging.getLogger("requests.packages.urllib3")
+    requests_log.setLevel(logging.DEBUG)
+    requests_log.propagate = True
+
+    import requests
+    r = requests.post('http://192.168.99.100:3000/waitlist_entries/', address_book.SerializeToString())
+
     if request.method == 'POST':
         waitlist_entry_form = WaitlistEntryForm(request.POST)
 
