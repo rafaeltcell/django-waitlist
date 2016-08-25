@@ -8,14 +8,56 @@
 
 // [START declaration]
 syntax = "proto2";
+
+import "google/protobuf/descriptor.proto";
+import "foo.proto";
+
 package tutorial;
+
 // [END declaration]
 
+extend google.protobuf.MessageOptions {
+  optional         bool     bool_opt = 7706090;
+  optional        int32    int32_opt = 7705709;
+  optional        int64    int64_opt = 7705542;
+  optional       uint32   uint32_opt = 7704880;
+  optional       uint64   uint64_opt = 7702367;
+  optional       sint32   sint32_opt = 7701568;
+  optional       sint64   sint64_opt = 7700863;
+  optional      fixed32  fixed32_opt = 7700307;
+  optional      fixed64  fixed64_opt = 7700194;
+  optional     sfixed32 sfixed32_opt = 7698645;
+  optional     sfixed64 sfixed64_opt = 7685475;
+  optional        float    float_opt = 7675390;
+  optional       double   double_opt = 7673293;
+  optional       string   string_opt = 7673285;
+  optional        bytes    bytes_opt = 7673238;
+}
+
+extend google.protobuf.FieldOptions {
+  optional float my_field_option = 50002;
+}
+
 // [START messages]
+message CustomOptionMinIntegerValues {
+  option     (bool_opt) = false;
+  option    (int32_opt) = -0x80000000;
+  option    (int64_opt) = -0x8000000000000000;
+  option   (uint32_opt) = 0;
+  option   (uint64_opt) = 0;
+  option   (sint32_opt) = -0x80000000;
+  option   (sint64_opt) = -0x8000000000000000;
+  option  (fixed32_opt) = 0;
+  option  (fixed64_opt) = 0;
+  option (sfixed32_opt) = -0x80000000;
+  option (sfixed64_opt) = -0x8000000000000000;
+}
+
 message Person {
   required bytes name = 1;
   required int32 id = 2;  // Unique ID number for this person.
   required bytes email = 3;
+  optional string my_field = 7 [(my_field_option) = 1.1];
 
   enum PhoneType {
     MOBILE = 0;
@@ -33,10 +75,13 @@ message Person {
   required group Nested = 5 {
     required bytes message = 1;
   }
+
+  option    (int32_opt) = -0x80000000;
 }
 
 // Our address book file is just one of these.
 message AddressBook {
   repeated Person people = 1;
+  repeated foo.Bar bar = 2;
 }
 // [END messages]

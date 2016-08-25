@@ -21,8 +21,9 @@ clean:
 	rmdir com/example 2>/dev/null || true
 	rmdir com 2>/dev/null || true
 
-protoc_middleman: addressbook.proto
-	protoc --cpp_out=. --java_out=. --python_out=. addressbook.proto
+protoc_middleman: foo.proto addressbook.proto
+	
+	protoc -I /usr/local/Cellar/protobuf/2.6.1/include -I /Users/ralba/Projects/github/django-waitlist --python_out=/Users/ralba/Projects/github/django-waitlist /Users/ralba/Projects/github/django-waitlist/addressbook.proto /Users/ralba/Projects/github/django-waitlist/foo.proto
 	@touch protoc_middleman
 
 protoc_middleman_go: addressbook.proto

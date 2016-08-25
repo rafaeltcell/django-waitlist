@@ -1,3 +1,4 @@
+# encoding: utf-8
 #! /usr/bin/env python
 
 # See README.txt for information and build instructions.
@@ -9,6 +10,9 @@ import sys
 def PromptForAddress(person):
   person.id = int(raw_input("Enter person ID number: "))
   person.name = raw_input("Enter name: ")
+  person.nested.message = "müller"
+  person.my_field = "SOME_FIELD"
+  # person.minval = addressbook_pb2.CustomOptionMinIntegerValues.DESCRIPTOR.GetOptions().Extensions[addressbook_pb2.int32_opt]
 
   email = raw_input("Enter email address (blank for none): ")
   if email != "":
@@ -50,6 +54,8 @@ except IOError:
 
 # Add an address.
 PromptForAddress(address_book.people.add())
+bar = address_book.bar.add()
+bar.name = "this is foobar"
 
 # Write the new address book back to disk.
 with open(sys.argv[1], "wb") as f:
