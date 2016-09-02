@@ -10,7 +10,6 @@ services:
     command: uwsgi --socket 0.0.0.0:3000 --protocol=http --module django_waitlist.wsgi --master --pidfile=/tmp/project-master.pid --processes=1 --enable-threads --check-static django_waitlist/
     volumes:
       - .:/code
-      - ./tcell:/code/tcell
     ports:
       - "3000:3000"
     links:
@@ -21,7 +20,6 @@ services:
     command: sh -c "pip install tcell_agent && tcell_agent run uwsgi --socket 0.0.0.0:3000 --protocol=http --module django_waitlist.wsgi --master --pidfile=/tmp/project-master.pid --processes=2 --enable-threads --check-static django_waitlist/"
     volumes:
       - .:/code
-      - ./tcell:/code/tcell
     ports:
       - "3000:3000"
     links:
@@ -33,7 +31,6 @@ services:
     volumes:
       - ../pythonagent-tcell:/tcellagent_src
       - .:/code
-      - ./tcell:/code/tcell
     ports:
       - "3000:3000"
     links:
