@@ -1,7 +1,12 @@
+import json
+
 from django.core.urlresolvers import reverse
 from django.shortcuts import render, redirect
+from django.http import HttpResponse, HttpResponseBadRequest
 
-from models import WaitlistEntry
+from django.views.decorators.csrf import csrf_exempt
+
+from waitlist_entries.models import WaitlistEntry
 
 from waitlist_entries.forms import WaitlistEntryForm
 
@@ -23,4 +28,35 @@ def index(request):
         'waitlist_entries': waitlist_entries,
         'waitlist_entry_form': waitlist_entry_form
     }
+
     return render(request, 'waitlist_entries/index.html', context)
+
+@csrf_exempt
+def create(request):
+    if request.method == 'POST':
+        data = request.POST
+
+        print("LSKDJFLKDJSF")
+        print(request.body)
+        print(data)
+        print("LSKDJFLKDJSF")
+
+        if not data:
+            try:
+                data = json.loads(request.body)
+            except Exception as e:
+                pass
+
+        waitlist_entry_form = WaitlistEntryForm(data)
+
+        if waitlist_entry_form.is_valid():
+            email = waitlist_entry_form.cleaned_data['email']
+            waitlist_entry = WaitlistEntry.objects.create(email=email)
+            return HttpResponse(
+                    json.dumps({"id": waitlist_entry.id, "email": waitlist_entry.email}),
+                    content_type='application/json')
+        else:
+            return HttpResponse(waitlist_entry_form.errors.as_json(), content_type='application/json')
+
+    else:
+        return HttpResponseBadRequest()
