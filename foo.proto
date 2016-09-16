@@ -1,7 +1,0 @@
-syntax = "proto2";
-
-package foo;
-
-message Bar {
-  required bytes name = 1;
-}
