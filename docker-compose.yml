@@ -7,10 +7,9 @@ services:
 
   web:
     build: .
-    command: uwsgi --socket 0.0.0.0:3000 --protocol=http --module django_waitlist.wsgi --master --pidfile=/tmp/project-master.pid --processes=1 --enable-threads --check-static django_waitlist/
+    command: uwsgi --socket 0.0.0.0:3000 --protocol=http --module django_waitlist.wsgi --master --pidfile=/tmp/project-master.pid --processes=1 --enable-threads --static-map /static=/code/static
     volumes:
       - .:/code
-      - ./tcell:/code/tcell
     ports:
       - "3000:3000"
     links:
@@ -18,10 +17,9 @@ services:
 
   tcell_web:
     build: .
-    command: sh -c "pip install tcell_agent && tcell_agent run uwsgi --socket 0.0.0.0:3000 --protocol=http --module django_waitlist.wsgi --master --pidfile=/tmp/project-master.pid --processes=2 --enable-threads --check-static django_waitlist/"
+    command: sh -c "pip install --upgrade tcell_agent && tcell_agent run uwsgi --socket 0.0.0.0:3000 --protocol=http --module django_waitlist.wsgi --master --pidfile=/tmp/project-master.pid --processes=2 --enable-threads --static-map /static=/code/static"
     volumes:
       - .:/code
-      - ./tcell:/code/tcell
     ports:
       - "3000:3000"
     links:
@@ -29,11 +27,10 @@ services:
 
   tcell_local_web:
     build: .
-    command: sh -c "pip install /tcellagent_src && tcell_agent run uwsgi --socket 0.0.0.0:3000 --protocol=http --module django_waitlist.wsgi --master --pidfile=/tmp/project-master.pid --processes=2 --enable-threads --check-static django_waitlist/"
+    command: sh -c "pip install --upgrade /tcellagent_src && tcell_agent run uwsgi --socket 0.0.0.0:3000 --protocol=http --module django_waitlist.wsgi --master --pidfile=/tmp/project-master.pid --processes=2 --enable-threads --static-map /static=/code/static"
     volumes:
       - ../pythonagent-tcell:/tcellagent_src
       - .:/code
-      - ./tcell:/code/tcell
     ports:
       - "3000:3000"
     links:
