@@ -1,6 +1,5 @@
 import os
 
-
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
 PACKAGE_ROOT = os.path.abspath(os.path.dirname(__file__))
 BASE_DIR = PACKAGE_ROOT
@@ -98,7 +97,7 @@ TEMPLATES = [
                 "django.template.context_processors.tz",
                 "django.template.context_processors.request",
                 "django.contrib.messages.context_processors.messages",
-                "account.context_processors.account",
+                "django.template.context_processors.request",
             ],
         },
     },
@@ -127,11 +126,6 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.sites",
     "django.contrib.staticfiles",
-
-    # external
-    "account",
-    "metron",
-    "pinax.eventlog",
 
     # project
     "django_waitlist",
@@ -176,14 +170,5 @@ FIXTURE_DIRS = [
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
-ACCOUNT_OPEN_SIGNUP = True
-ACCOUNT_EMAIL_UNIQUE = True
-ACCOUNT_EMAIL_CONFIRMATION_REQUIRED = False
-ACCOUNT_LOGIN_REDIRECT_URL = "home"
-ACCOUNT_LOGOUT_REDIRECT_URL = "home"
-ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 2
-ACCOUNT_USE_AUTH_AUTHENTICATE = True
-
-AUTHENTICATION_BACKENDS = [
-    "account.auth_backends.UsernameAuthenticationBackend",
-]
+LOGIN_REDIRECT_URL = "/"
+SITE_NAME="Django Waitlist"
