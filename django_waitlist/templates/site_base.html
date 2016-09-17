@@ -27,31 +27,17 @@
         <div class="{% block wrapper_class %}{% endblock %}">
 
             {% block topbar_base %}
-                <header>
-                    <div class="navbar navbar-default {% block navbar_class %}navbar-fixed-top{% endblock %}">
-                        <div class="container">
-                        {% block topbar %}
-                            <div class="navbar-header">
-                                <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                                    <span class="fa fa-bars"></span>
-                                </button>
-                                {% block site_brand %}<a class="navbar-brand" href="{% url "home" %}">{{ SITE_NAME }}</a>{% endblock %}
-                            </div>
-                            <div class="collapse navbar-collapse navbar-responsive-collapse">
-                                {% block nav %}
-                                    {% comment %}
-                                        <ul class="nav navbar-nav">
-                                            <li><a href="#tab_one">One</a></li>
-                                            <li><a href="#tab_two">Two</a></li>
-                                        </ul>
-                                    {% endcomment %}
-                                {% endblock %}
-                                {% block account_bar %}{% include "_account_bar.html" %}{% endblock %}
-                            </div>
-                        {% endblock %}
-                        </div>
-                    </div>
-                </header>
+            <nav class="navbar navbar-default navbar-static-top navbar-inverse">
+              <div class="container">
+                <ul class="nav navbar-nav">
+                  <li>
+                    <a href="{% url "home" %}"><span class="glyphicon glyphicon-home"></span> Home</a>
+                  </li>
+                </ul>
+
+                {% block account_bar %}{% include "_account_bar.html" %}{% endblock %}
+              </div>
+            </nav>
             {% endblock %}
 
             {% block body_base %}

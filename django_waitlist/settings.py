@@ -171,4 +171,4 @@ FIXTURE_DIRS = [
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 LOGIN_REDIRECT_URL = "/"
-SITE_NAME="Django Waitlist"
+SITE_NAME = "Django Waitlist"

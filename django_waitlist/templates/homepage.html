@@ -1,20 +1,25 @@
 {% extends "site_base.html" %}
 
 {% load i18n %}
+{% load account_tags %}
 
 {% block head_title %}Django Waitlist{% endblock %}
 
 {% block body_class %}home{% endblock %}
 
 {% block body_base %}
-    <section class="jumbotron">
-        <div class="container">
-            {% if not request.user.is_authenticated %}
-                {% url "login" as login_url %}
-                <p>{% blocktrans %}<a href="{{ login_url }}" class="btn btn-default">Log In</a>{% endblocktrans %}</p>
-            {% endif %}
-        </div>
-    </section>
+    <div class="jumbotron text-center">
+      <div class="container">
+        <h1>Welcome to TCell's Waitlist</h1>
+        {% if not request.user.is_authenticated %}
+          {% url "login" as login_url %}
+          {% blocktrans %}<a href="{{ login_url }}" class="btn btn-lg btn-primary">Log In</a>{% endblocktrans %}
+        {% else %}
+            <p>Hi, {% user_display request.user %}</p>
+        {% endif %}
+      </div>
+    </div>
+
     <section>
         <div class="container">
           <h1>django_waitlist</h1>
@@ -23,6 +28,7 @@
           <ul>
             <li>web</li>
             <li>tcell_web</li>
+            <li>tcell_local_web</li>
           </ul>
 
           <h3>Setup</h3>
@@ -30,7 +36,7 @@
           <ul>
             <li>1. docker-compose build</li>
             <li>2. sh docker/initial_setup.sh # needs `psql`. creates db and seeds it.</li>
-            <li>3. docker-compose up web or docker-compose up tcell_web</li>
+            <li>3. docker-compose up web (tcell_web|tcell_local_web)</li>
           </ul>
 
           <h3>Vulnerabilities</h3>
