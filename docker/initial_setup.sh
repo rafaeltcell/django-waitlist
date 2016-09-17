@@ -6,6 +6,6 @@ docker-machine ip | xargs -I % psql -h % -p 5432 -d postgres -U postgres -c 'cre
 echo "Running Migrations"
 docker-compose run web python manage.py migrate
 echo "Seeding DB"
-docker-compose run web python manage.py loaddata waitlist_entries
+docker-compose run web python manage.py loaddata waitlist_entries accounts
 docker-compose run web python manage.py collectstatic
 docker-compose stop
