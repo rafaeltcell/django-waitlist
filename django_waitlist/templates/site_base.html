@@ -33,6 +33,9 @@
                   <li>
                     <a href="{% url "home" %}"><span class="glyphicon glyphicon-home"></span> Home</a>
                   </li>
+                  <li>
+                    <a href="{% url "waitlist_entries:index" %}">Waitlist</a>
+                  </li>
                 </ul>
 
                 {% block account_bar %}{% include "_account_bar.html" %}{% endblock %}
