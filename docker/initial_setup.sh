@@ -7,5 +7,4 @@ echo "Running Migrations"
 docker-compose run web python manage.py migrate
 echo "Seeding DB"
 docker-compose run web python manage.py loaddata waitlist_entries accounts
-docker-compose run web python manage.py collectstatic
 docker-compose stop

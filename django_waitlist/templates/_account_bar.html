@@ -11,7 +11,14 @@
             <a id="logout" href="{% url 'logout' %}"><i class="fa fa-power-off"></i> {% trans "Log out" %}</a>
         </li>
     {% else %}
-        <li>Signup Is disabled at this time</li>
+        {% url "login" as login_url %}
+        <li>
+            {% blocktrans %}<a href="{{ login_url }}">Log in</a>{% endblocktrans %}
+        </li>
+        {% url "register" as register_url %}
+        <li>
+            {% blocktrans %}<a href="{{ register_url }}">Sign up</a>{% endblocktrans %}
+        </li>
     {% endif %}
 </ul>
 

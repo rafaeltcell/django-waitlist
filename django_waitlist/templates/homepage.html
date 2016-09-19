@@ -13,7 +13,9 @@
         <h1>Welcome to TCell's Waitlist</h1>
         {% if not request.user.is_authenticated %}
           {% url "login" as login_url %}
+          {% url "register" as register_url %}
           {% blocktrans %}<a href="{{ login_url }}" class="btn btn-lg btn-primary">Log In</a>{% endblocktrans %}
+          {% blocktrans %}<a href="{{ register_url }}" class="btn btn-lg btn-primary">Sign Up</a>{% endblocktrans %}
         {% else %}
             <p>Hi, {% user_display request.user %}</p>
         {% endif %}
