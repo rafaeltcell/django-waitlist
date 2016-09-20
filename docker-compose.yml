@@ -6,7 +6,9 @@ services:
       - "5432:5432"
 
   web:
-    build: .
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.django19
     command: uwsgi --socket 0.0.0.0:3000 --protocol=http --module django_waitlist.wsgi --master --pidfile=/tmp/project-master.pid --processes=1 --enable-threads --static-map /static=/code/static
     volumes:
       - .:/code
@@ -16,7 +18,9 @@ services:
       - postgreshost
 
   tcell_web:
-    build: .
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.django19
     command: sh -c "pip install --upgrade tcell_agent && tcell_agent run uwsgi --socket 0.0.0.0:3000 --protocol=http --module django_waitlist.wsgi --master --pidfile=/tmp/project-master.pid --processes=2 --enable-threads --static-map /static=/code/static"
     volumes:
       - .:/code
@@ -26,8 +30,49 @@ services:
       - postgreshost
 
   tcell_local_web:
-    build: .
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.django19
     command: sh -c "pip install --upgrade /tcellagent_src && tcell_agent run uwsgi --socket 0.0.0.0:3000 --protocol=http --module django_waitlist.wsgi --master --pidfile=/tmp/project-master.pid --processes=2 --enable-threads --static-map /static=/code/static"
+    volumes:
+      - ../pythonagent-tcell:/tcellagent_src
+      - .:/code
+    ports:
+      - "3000:3000"
+    links:
+      - postgreshost
+
+  tcell_local_web17:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.django17
+    command: sh -c "pip install --upgrade /tcellagent_src && tcell_agent run uwsgi --socket 0.0.0.0:3000 --protocol=http --module django_waitlist.wsgi --master --pidfile=/tmp/project-master.pid --processes=2 --enable-threads --static-map /static=/code/static"
+    volumes:
+      - ../pythonagent-tcell:/tcellagent_src
+      - .:/code
+    ports:
+      - "3000:3000"
+    links:
+      - postgreshost
+
+  tcell_local_web18:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.django18
+    command: sh -c "pip install --upgrade /tcellagent_src && tcell_agent run uwsgi --socket 0.0.0.0:3000 --protocol=http --module django_waitlist.wsgi --master --pidfile=/tmp/project-master.pid --processes=2 --enable-threads --static-map /static=/code/static"
+    volumes:
+      - ../pythonagent-tcell:/tcellagent_src
+      - .:/code
+    ports:
+      - "3000:3000"
+    links:
+      - postgreshost
+
+  tcell_local_web110:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.django110
+    command: sh -c "pip install --upgrade /tcellagent_src && python manage.py runserver 3000"
     volumes:
       - ../pythonagent-tcell:/tcellagent_src
       - .:/code
