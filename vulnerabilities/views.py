@@ -1,6 +1,4 @@
-import json
-
-from django.http import HttpResponse, HttpResponseForbidden
+from django.http import HttpResponseForbidden
 from django.shortcuts import render
 
 from waitlist_entries.models import WaitlistEntry
@@ -20,9 +18,4 @@ def search(request):
 
 def sql_exception(request):
     for p in WaitlistEntry.objects.raw("select * from wailskfdj"):
-        print(p)
-
-def project_show(request, project_id):
-    return HttpResponse(
-        json.dumps({"id": project_id}),
-        content_type='application/json')
+        print p
