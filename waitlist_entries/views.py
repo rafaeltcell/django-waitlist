@@ -30,6 +30,10 @@ def index(request):
     }
     return render(request, 'waitlist_entries/index.html', context)
 
+def send_me_elsewhere(request):
+    return redirect('http://google.com/')
+
+
 @csrf_exempt
 def create(request):
     if request.method == 'POST':

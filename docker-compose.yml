@@ -8,7 +8,7 @@ services:
   web:
     build:
       context: .
-      dockerfile: docker/Dockerfile.django19
+      dockerfile: docker/Dockerfile.django17
     command: uwsgi --socket 0.0.0.0:3000 --protocol=http --module django_waitlist.wsgi --master --pidfile=/tmp/project-master.pid --processes=1 --enable-threads --static-map /static=/code/static
     volumes:
       - .:/code
@@ -20,7 +20,7 @@ services:
   tcell_web:
     build:
       context: .
-      dockerfile: docker/Dockerfile.django19
+      dockerfile: docker/Dockerfile.django17
     command: sh -c "pip install --upgrade tcell_agent && tcell_agent run uwsgi --socket 0.0.0.0:3000 --protocol=http --module django_waitlist.wsgi --master --pidfile=/tmp/project-master.pid --processes=2 --enable-threads --static-map /static=/code/static"
     volumes:
       - .:/code
@@ -32,8 +32,8 @@ services:
   tcell_local_web:
     build:
       context: .
-      dockerfile: docker/Dockerfile.django19
-    command: sh -c "pip install --upgrade /tcellagent_src && tcell_agent run uwsgi --socket 0.0.0.0:3000 --protocol=http --module django_waitlist.wsgi --master --pidfile=/tmp/project-master.pid --processes=2 --enable-threads --static-map /static=/code/static"
+      dockerfile: docker/Dockerfile.django17
+    command: sh -c "pip install --upgrade https://s3-us-west-1.amazonaws.com/tcell-agent-betas/tcell_agent-0.2.22b1.tar.gz && tcell_agent run uwsgi --socket 0.0.0.0:3000 --protocol=http --module django_waitlist.wsgi --master --pidfile=/tmp/project-master.pid --processes=2 --enable-threads --static-map /static=/code/static"
     volumes:
       - ../pythonagent-tcell:/tcellagent_src
       - .:/code
