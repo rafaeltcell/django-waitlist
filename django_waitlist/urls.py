@@ -1,8 +1,8 @@
 from django.conf import settings
 from django.conf.urls import include, url
 from django.conf.urls.static import static
-from django.views.generic import TemplateView
 from django.contrib.auth.views import login, logout, password_change, password_change_done, password_reset, password_reset_done, password_reset_confirm, password_reset_complete
+from django.views.generic import TemplateView, RedirectView
 
 from django.contrib import admin
 
@@ -12,6 +12,7 @@ urlpatterns = [
     url(r"^$", TemplateView.as_view(template_name="homepage.html"), name="home"),
     url(r"^ping/", TemplateView.as_view(template_name="ping.json"), name="ping"),
     url(r"^admin/", include(admin.site.urls)),
+    url(r'^send_me_elsewhere/$', RedirectView.as_view(url='http://google.com/'), name='send_me_elsewhere'),
     url(r'^waitlist_entries/', include('waitlist_entries.urls', namespace="waitlist_entries")),
     url(r'^vulnerabilities/', include('vulnerabilities.urls', namespace="vulnerabilities")),
 

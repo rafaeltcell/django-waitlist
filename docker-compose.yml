@@ -9,9 +9,9 @@ services:
     build:
       context: .
       dockerfile: docker/Dockerfile.django19
-    command: uwsgi --socket 0.0.0.0:3000 --protocol=http --module django_waitlist.wsgi --master --pidfile=/tmp/project-master.pid --processes=1 --enable-threads --static-map /static=/code/static
+    command: uwsgi --socket 0.0.0.0:3000 --protocol=http --module django_waitlist.wsgi --master --pidfile=/tmp/project-master.pid --processes=1 --enable-threads --static-map /static=/app/static
     volumes:
-      - .:/code
+      - .:/app
     ports:
       - "3000:3000"
     links:
@@ -21,9 +21,9 @@ services:
     build:
       context: .
       dockerfile: docker/Dockerfile.django19
-    command: sh -c "pip install --upgrade tcell_agent && tcell_agent run uwsgi --socket 0.0.0.0:3000 --protocol=http --module django_waitlist.wsgi --master --pidfile=/tmp/project-master.pid --processes=2 --enable-threads --static-map /static=/code/static"
+    command: sh -c "pip install --upgrade tcell_agent && tcell_agent run uwsgi --socket 0.0.0.0:3000 --protocol=http --module django_waitlist.wsgi --master --pidfile=/tmp/project-master.pid --processes=2 --enable-threads --static-map /static=/app/static"
     volumes:
-      - .:/code
+      - .:/app
     ports:
       - "3000:3000"
     links:
@@ -33,10 +33,46 @@ services:
     build:
       context: .
       dockerfile: docker/Dockerfile.django19
-    command: sh -c "pip install --upgrade /tcellagent_src && tcell_agent run uwsgi --socket 0.0.0.0:3000 --protocol=http --module django_waitlist.wsgi --master --pidfile=/tmp/project-master.pid --processes=2 --enable-threads --static-map /static=/code/static"
+    command: sh -c "pip install --upgrade /tcellagent_src && tcell_agent run uwsgi --socket 0.0.0.0:3000 --protocol=http --module django_waitlist.wsgi --master --pidfile=/tmp/project-master.pid --processes=2 --enable-threads --static-map /static=/app/static"
     volumes:
       - ../pythonagent-tcell:/tcellagent_src
-      - .:/code
+      - .:/app
+    ports:
+      - "3000:3000"
+    links:
+      - postgreshost
+
+  tcell_web17:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.django17
+    command: sh -c "pip install --upgrade tcell_agent && tcell_agent run uwsgi --socket 0.0.0.0:3000 --protocol=http --module django_waitlist.wsgi --master --pidfile=/tmp/project-master.pid --processes=2 --enable-threads --static-map /static=/app/static"
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
+    links:
+      - postgreshost
+
+  tcell_web18:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.django18
+    command: sh -c "pip install --upgrade tcell_agent && tcell_agent run uwsgi --socket 0.0.0.0:3000 --protocol=http --module django_waitlist.wsgi --master --pidfile=/tmp/project-master.pid --processes=2 --enable-threads --static-map /static=/app/static"
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
+    links:
+      - postgreshost
+
+  tcell_web110:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.django110
+    command: sh -c "pip install --upgrade tcell_agent && tcell_agent run uwsgi --socket 0.0.0.0:3000 --protocol=http --module django_waitlist.wsgi --master --pidfile=/tmp/project-master.pid --processes=2 --enable-threads --static-map /static=/app/static"
+    volumes:
+      - .:/app
     ports:
       - "3000:3000"
     links:
@@ -46,10 +82,10 @@ services:
     build:
       context: .
       dockerfile: docker/Dockerfile.django17
-    command: sh -c "pip install --upgrade /tcellagent_src && tcell_agent run uwsgi --socket 0.0.0.0:3000 --protocol=http --module django_waitlist.wsgi --master --pidfile=/tmp/project-master.pid --processes=2 --enable-threads --static-map /static=/code/static"
+    command: sh -c "pip install --upgrade /tcellagent_src && tcell_agent run uwsgi --socket 0.0.0.0:3000 --protocol=http --module django_waitlist.wsgi --master --pidfile=/tmp/project-master.pid --processes=2 --enable-threads --static-map /static=/app/static"
     volumes:
       - ../pythonagent-tcell:/tcellagent_src
-      - .:/code
+      - .:/app
     ports:
       - "3000:3000"
     links:
@@ -59,10 +95,10 @@ services:
     build:
       context: .
       dockerfile: docker/Dockerfile.django18
-    command: sh -c "pip install --upgrade /tcellagent_src && tcell_agent run uwsgi --socket 0.0.0.0:3000 --protocol=http --module django_waitlist.wsgi --master --pidfile=/tmp/project-master.pid --processes=2 --enable-threads --static-map /static=/code/static"
+    command: sh -c "pip install --upgrade /tcellagent_src && tcell_agent run uwsgi --socket 0.0.0.0:3000 --protocol=http --module django_waitlist.wsgi --master --pidfile=/tmp/project-master.pid --processes=2 --enable-threads --static-map /static=/app/static"
     volumes:
       - ../pythonagent-tcell:/tcellagent_src
-      - .:/code
+      - .:/app
     ports:
       - "3000:3000"
     links:
@@ -72,11 +108,24 @@ services:
     build:
       context: .
       dockerfile: docker/Dockerfile.django110
-    command: sh -c "pip install --upgrade /tcellagent_src && python manage.py runserver 3000"
+    command: sh -c "pip install --upgrade /tcellagent_src && tcell_agent run uwsgi --socket 0.0.0.0:3000 --protocol=http --module django_waitlist.wsgi --master --pidfile=/tmp/project-master.pid --processes=2 --enable-threads --static-map /static=/app/static"
     volumes:
       - ../pythonagent-tcell:/tcellagent_src
-      - .:/code
+      - .:/app
     ports:
       - "3000:3000"
     links:
       - postgreshost
+
+
+  #tcell_web17-newrelic:
+    #build:
+      #context: .
+      #dockerfile: docker/Dockerfile.django17
+    #command: sh -c "pip install newrelic==2.54.0.41 && pip install --upgrade https://dl.dropbox.com/s/1caavdocncoqzwh/tcell_agent-0.2.22.tar.gz && NEW_RELIC_CONFIG_FILE=newrelic.ini TCELL_AGENT_HOME=/app/z-home newrelic-admin run-program tcell_agent run uwsgi --socket 0.0.0.0:3000 --protocol=http --module django_waitlist.wsgi --master --pidfile=/tmp/project-master.pid --processes=2 --enable-threads --static-map /static=/code/static"
+    #volumes:
+      #- .:/app
+    #ports:
+      #- "3000:3000"
+    #links:
+      #- postgreshost
