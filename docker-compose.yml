@@ -47,6 +47,18 @@ services:
     links:
       - postgreshost
 
+  tcell_local_web_sqlite:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.django19
+    command: sh -c "pip install --upgrade /tcellagent_src && tcell_agent run uwsgi --socket 0.0.0.0:3000 --protocol=http --module django_waitlist.wsgi --master --pidfile=/tmp/project-master.pid --processes=2 --threads=2 --enable-threads --static-map /static=/app/static --py-tracebacker=/tmp/djangowaitlist"
+    volumes:
+      - ../pythonagent-tcell:/tcellagent_src
+      - .:/app
+      - ./docker/settings.py.sqlite:/app/django_waitlist/settings.py
+    ports:
+      - "3000:3000"
+
   tcell_web17:
     build:
       context: .
