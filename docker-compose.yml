@@ -1,9 +1,14 @@
 version: '2'
 services:
   postgreshost:
-    image: postgres:9.4.1
-    ports:
-      - "5432:5432"
+    image: postgres:latest
+
+  init-postgres:
+    image: postgres
+    working_dir: /build
+    command: sh -c "psql -h postgreshost -p 5432 -d postgres -U postgres -tc \"SELECT 1 FROM pg_database WHERE datname = 'django_waitlist_dev'\" | grep -q 1 || psql -h postgreshost -p 5432 -U postgres -c \"CREATE DATABASE django_waitlist_dev\""
+    depends_on:
+      - postgreshost
 
   web:
     build:
