@@ -1,5 +1,5 @@
-echo "CREATING django_waitlist_dev"
-docker-compose $COMPOSE_FILE run --rm init-postgres
+echo "Creating django_waitlist_dev"
+docker-compose run --rm init-postgres
 echo "Running Migrations"
 docker-compose run --rm web python manage.py migrate
 echo "Seeding DB"
