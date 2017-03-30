@@ -3,12 +3,22 @@ services:
   postgreshost:
     image: postgres:latest
 
+  postgreshost17:
+    image: postgres:latest
+
   init-postgres:
     image: postgres
     working_dir: /build
     command: sh -c "psql -h postgreshost -p 5432 -d postgres -U postgres -tc \"SELECT 1 FROM pg_database WHERE datname = 'django_waitlist_dev'\" | grep -q 1 || psql -h postgreshost -p 5432 -U postgres -c \"CREATE DATABASE django_waitlist_dev\""
     depends_on:
       - postgreshost
+
+  init-postgres17:
+    image: postgres
+    working_dir: /build
+    command: sh -c "psql -h postgreshost17 -p 5432 -d postgres -U postgres -tc \"SELECT 1 FROM pg_database WHERE datname = 'django_waitlist_dev'\" | grep -q 1 || psql -h postgreshost17 -p 5432 -U postgres -c \"CREATE DATABASE django_waitlist_dev\""
+    depends_on:
+      - postgreshost17
 
   web:
     build:
@@ -21,6 +31,18 @@ services:
       - "3000:3000"
     links:
       - postgreshost
+
+  web17:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.django17
+    command: uwsgi --socket 0.0.0.0:3000 --protocol=http --module django_waitlist.wsgi --master --pidfile=/tmp/project-master.pid --processes=2 --threads=2 --enable-threads --static-map /static=/app/static --py-tracebacker=/tmp/djangowaitlist
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
+    links:
+      - postgreshost17:postgreshost
 
   tcell_web:
     build:
@@ -69,7 +91,7 @@ services:
     ports:
       - "3000:3000"
     links:
-      - postgreshost
+      - postgreshost17:postgreshost
 
   tcell_web18:
     build:
@@ -119,7 +141,7 @@ services:
     ports:
       - "3000:3000"
     links:
-      - postgreshost
+      - postgreshost17:postgreshost
 
   tcell_local_web18:
     build:
