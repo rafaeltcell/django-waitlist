@@ -1,4 +1,6 @@
-from django.http import HttpResponseForbidden
+import json
+
+from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import render
 
 from waitlist_entries.models import WaitlistEntry
@@ -19,3 +21,11 @@ def search(request):
 def sql_exception(request):
     for p in WaitlistEntry.objects.raw("select * from wailskfdj"):
         print p
+
+def send_me_json(request):
+    if request.method == 'POST':
+        return HttpResponse(
+            json.dumps({"success": True}),
+            content_type='application/json', status=200)
+    else:
+        return HttpResponseForbidden()
