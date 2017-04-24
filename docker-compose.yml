@@ -9,14 +9,14 @@ services:
   init-postgres:
     image: postgres
     working_dir: /build
-    command: sh -c "psql -h postgreshost -p 5432 -d postgres -U postgres -tc \"SELECT 1 FROM pg_database WHERE datname = 'django_waitlist_dev'\" | grep -q 1 || psql -h postgreshost -p 5432 -U postgres -c \"CREATE DATABASE django_waitlist_dev\""
+    command: sh -c "timeout 10 bash -c '</dev/tcp/postgreshost/5432' 2>/dev/null && (psql -h postgreshost -p 5432 -d postgres -U postgres -tc \"SELECT 1 FROM pg_database WHERE datname = 'django_waitlist_dev'\" | grep -q 1 || psql -h postgreshost -p 5432 -U postgres -c \"CREATE DATABASE django_waitlist_dev\") || echo 'postgreshost failed to start!!!!!'"
     depends_on:
       - postgreshost
 
   init-postgres17:
     image: postgres
     working_dir: /build
-    command: sh -c "psql -h postgreshost17 -p 5432 -d postgres -U postgres -tc \"SELECT 1 FROM pg_database WHERE datname = 'django_waitlist_dev'\" | grep -q 1 || psql -h postgreshost17 -p 5432 -U postgres -c \"CREATE DATABASE django_waitlist_dev\""
+    command: sh -c "timeout 10 bash -c '</dev/tcp/postgreshost17/5432' 2>/dev/null && (psql -h postgreshost17 -p 5432 -d postgres -U postgres -tc \"SELECT 1 FROM pg_database WHERE datname = 'django_waitlist_dev'\" | grep -q 1 || psql -h postgreshost17 -p 5432 -U postgres -c \"CREATE DATABASE django_waitlist_dev\") ||  echo 'postgreshost17 failed to start!!!!!'"
     depends_on:
       - postgreshost17
 
@@ -202,6 +202,22 @@ services:
       - "3000:3000"
     links:
       - postgreshost
+    security_opt:
+      - seccomp:unconfined
+
+  tcell_web17_newrelic:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.django17
+    command: sh -c "pip install --upgrade tcell_agent && newrelic-admin run-program tcell_agent run uwsgi --ini uwsgi.ini"
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
+    links:
+      - postgreshost17:postgreshost
+    environment:
+      - NEW_RELIC_CONFIG_FILE=newrelic.ini
     security_opt:
       - seccomp:unconfined
 
