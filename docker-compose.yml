@@ -204,3 +204,20 @@ services:
       - postgreshost
     security_opt:
       - seccomp:unconfined
+
+  tcell_local_web17_newrelic:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.django17
+    command: sh -c "pip install --upgrade /tcellagent_src && newrelic-admin run-program tcell_agent run uwsgi --ini uwsgi.ini"
+    volumes:
+      - ../pythonagent-tcell:/tcellagent_src
+      - .:/app
+    ports:
+      - "3000:3000"
+    links:
+      - postgreshost17:postgreshost
+    environment:
+      - NEW_RELIC_CONFIG_FILE=newrelic.ini
+    security_opt:
+      - seccomp:unconfined
