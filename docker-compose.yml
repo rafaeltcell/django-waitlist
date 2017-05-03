@@ -101,6 +101,21 @@ services:
     security_opt:
       - seccomp:unconfined
 
+  tcell_web17_nginx:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.django17.nginx
+    command: /bin/bash -c "service nginx start & pip install --upgrade tcell_agent==0.2.29 && tcell_agent run uwsgi --ini uwsgi.ini"
+    volumes:
+      - .:/app
+      - ./docker/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "80:80"
+    links:
+      - postgreshost17:postgreshost
+    security_opt:
+      - seccomp:unconfined
+
   tcell_web18:
     build:
       context: .
