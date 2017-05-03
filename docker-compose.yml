@@ -87,6 +87,21 @@ services:
     security_opt:
       - seccomp:unconfined
 
+  tcell_local_web15:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.django15
+    command: sh -c "pip install --upgrade tcell_agent && tcell_agent run uwsgi --ini uwsgi.ini"
+    volumes:
+      - .:/app
+      - ./docker/settings.py.django15:/app/django_waitlist/settings.py
+    ports:
+      - "3000:3000"
+    links:
+      - postgreshost17:postgreshost
+    security_opt:
+      - seccomp:unconfined
+
   tcell_web17:
     build:
       context: .
@@ -156,6 +171,22 @@ services:
       - "3000:3000"
     links:
       - postgreshost
+    security_opt:
+      - seccomp:unconfined
+
+  tcell_local_web15:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.django15
+    command: sh -c "pip install --upgrade /tcellagent_src && tcell_agent run uwsgi --ini uwsgi.ini"
+    volumes:
+      - ../pythonagent-tcell:/tcellagent_src
+      - .:/app
+      - ./docker/settings.py.django15:/app/django_waitlist/settings.py
+    ports:
+      - "3000:3000"
+    links:
+      - postgreshost17:postgreshost
     security_opt:
       - seccomp:unconfined
 
