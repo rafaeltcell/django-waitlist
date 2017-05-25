@@ -5,7 +5,7 @@ RUN apt-get update && apt-get install -y python
 RUN apt-get install -y python-setuptools python-dev build-essential
 RUN easy_install pip
 RUN apt-get install -y python-dev libffi-dev libssl-dev libpq-dev
-RUN apt-get install -y vim
+RUN apt-get install -y vim wget
 RUN pip install --upgrade pip
 
 RUN apt-get -y install python-software-properties
@@ -32,3 +32,38 @@ ADD requirements.txt /app/requirements.txt
 RUN pip install -r requirements.txt
 RUN pip install Django==1.7.7
 RUN pip install newrelic==2.54.0.41
+RUN pip install --upgrade tcell_agent==0.2.32
+
+RUN mkdir /tmp/tcell
+
+RUN useradd -ms /bin/bash tcelluser
+RUN chown -R www-data /tmp/tcell
+#USER tcelluser
+#USER www-data
+
+# UPDATE CURL
+# Install any build dependencies needed for curl
+RUN sed -i -- 's/#deb-src/deb-src/g' /etc/apt/sources.list && sudo sed -i -- 's/# deb-src/deb-src/g' /etc/apt/sources.list
+RUN apt-get update
+RUN apt-get build-dep -y curl
+
+# Get latest (as of Feb 25, 2016) libcurl
+RUN mkdir /tmp/curl
+WORKDIR /tmp/curl
+RUN wget http://curl.haxx.se/download/curl-7.50.2.tar.bz2
+RUN tar -xvjf curl-7.50.2.tar.bz2
+WORKDIR /tmp/curl/curl-7.50.2
+
+# The usual steps for building an app from source
+# ./configure
+# ./make
+# sudo make install
+RUN ./configure
+RUN make
+RUN make install
+
+# Resolve any issues of C-level lib
+# location caches ("shared library cache")
+RUN ldconfig
+
+WORKDIR /app

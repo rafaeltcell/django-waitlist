@@ -34,6 +34,6 @@ urlpatterns = [
     url(r'^big_transfer/$', big_transfer, name='big_transfer'),
 ]
 
-urlpatterns += [url(r'^number_' + str(i) + '/$', TemplateView.as_view(template_name="homepage.html"), name="home") for i in range(1, 1000)]
+urlpatterns += [url(r'^number_' + str(i) + '/$', TemplateView.as_view(template_name="homepage.html"), name="home") for i in range(1, 4000)]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
