@@ -21,6 +21,40 @@ def index(request):
             redirect(reverse('waitlist_entries:index'))
 
     else:
+        from tcell_hooks.v1 import send_django_login_event, LOGIN_SUCCESS, LOGIN_FAILURE
+
+        send_django_login_event(
+            status=LOGIN_SUCCESS,
+            django_request=request,
+            user_id="waitlist_entries+index_success@tcell.io",
+            session_id="124KDJFL3234")
+        send_django_login_event(
+            status=LOGIN_FAILURE,
+            django_request=request,
+            user_id="waitlist_entries+index_failure@tcell.io",
+            session_id="124KDJFL3234")
+
+        from tcell_hooks.v1 import send_login_event
+
+        send_login_event(
+            status=LOGIN_SUCCESS,
+            session_id="124KDJFL3234",
+            user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) ...",
+            referrer="http://192.168.99.100:3000/",
+            remote_address="192.168.99.1",
+            header_keys=["HOST", "USER_AGENT", "ACCEPT", "REFERER", "ACCEPT_ENCODING", "ACCEPT_LANGUAGE", "COOKIE"],
+            user_id="waitlist_entries+non_django_success@tcell.io",
+            document_uri="/users/auth/doorkeeper/callbackuri")
+        send_login_event(
+            status=LOGIN_FAILURE,
+            session_id="124KDJFL3234",
+            user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) ...",
+            referrer="http://192.168.99.100:3000/",
+            remote_address="192.168.99.1",
+            header_keys=["HOST", "USER_AGENT", "ACCEPT", "REFERER", "ACCEPT_ENCODING", "ACCEPT_LANGUAGE", "COOKIE"],
+            user_id="waitlist_entries+non_django_failure@tcell.io",
+            document_uri="/users/auth/doorkeeper/callbackuri")
+
         waitlist_entry_form = WaitlistEntryForm()
 
     waitlist_entries = WaitlistEntry.objects.all()
